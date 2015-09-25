@@ -43,5 +43,39 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+
+  gem 'capistrano-rails'
+
+  gem 'capistrano-sidekiq'
 end
+
+group :test do 
+  gem 'rspec'
+
+  gem 'factory_girl'
+
+  gem 'shoulda-matchers'
+end
+
+gem 'roo'
+
+gem 'slim'
+
+gem 'devise'
+
+gem 'cancancan'
+
+gem 'thin'
+
+gem 'capistrano', group: :development
+
+gem 'rmagick'
+
+gem 'sidekiq'
+
+gem 'bootstrap-sass'
+
+gem 'jquery-datatables-rails'
+
+gem 'jquery-ui-rails'
 
