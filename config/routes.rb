@@ -3,7 +3,11 @@ Rails.application.routes.draw do
   devise_for :users
   root 'students#index'
   
-  resources :students
+  resources :students do
+    collection do
+      post 'import'
+    end
+  end
   resources :personal_documents
   resources :moving_documents
   

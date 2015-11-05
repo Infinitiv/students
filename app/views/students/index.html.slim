@@ -1,0 +1,12 @@
+h1.page-header Список обучающихся
+= form_tag import_students_path, multipart: true do
+  = file_field_tag :file
+  br
+  = submit_tag "Загрузить обучающихся", class: "btn btn-primary"
+table.table.datatable
+  thead
+    th Ф.И.О.
+  tbody
+    - @students.each do |student|
+        tr
+          td= "#{sex_sign(student.sex)} #{link_to student.fio, student_path(student)}".html_safe
