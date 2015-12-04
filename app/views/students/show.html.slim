@@ -24,6 +24,9 @@ dl
   dd= @student.education_start_place
   dt Образовательная программа
   dd= "#{@student.educational_program.name} (#{@student.educational_program.level}), #{@student.educational_program.standart}, источник финансирования: #{@student.source}"
+  -if @student.target_organization
+    dt Заказчик целевой подготовки
+    dd= @student.target_organization.name
 -if @student.comment
   h2 Комментарий
   p= @student.comment
