@@ -2,6 +2,8 @@ class Student < ActiveRecord::Base
   belongs_to :target_organization
   belongs_to :educational_program
   belongs_to :status
+  has_many :personal_documents
+  has_and_belongs_to_many :moving_documents
   
   def self.import(file)
     accessible_attributes = column_names

@@ -16,6 +16,6 @@ class StudentsController < ApplicationController
   private
   
   def set_student
-    @student = Student.find(params[:id])  
+    @student = Student.includes(:educational_program).find(params[:id])  
   end
 end

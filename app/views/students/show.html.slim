@@ -1,1 +1,37 @@
-h1.page-header= "#{@student.fio} #{sex_sign(@student.sex)}".html_safe
+h1.page-header
+  - case
+    - when @student.stage_leader
+      .span.text-success.glyphicon.glyphicon-star
+    - when @student.group_leader
+      .span.text-success.glyphicon.glyphicon-star-empty
+  = "#{@student.fio} #{sex_sign(@student.sex)}".html_safe
+p.pull-left= @student.status.name if @student.status
+p.pull-right= educational_status(@student)
+.row
+h2 Персональные данные
+dl
+  dt Дата рождения
+  dd= @student.birth_date
+  dt Гражданство
+  dd= @student.sitizenship
+  dt Регион проживания
+  dd= @student.region_code
+h2 Обучение
+dl
+  dt Дата начала обучения
+  dd= @student.education_start_date
+  dt Место начала обучения
+  dd= @student.education_start_place
+  dt Образовательная программа
+  dd= "#{@student.educational_program.name} (#{@student.educational_program.level}), #{@student.educational_program.standart}, источник финансирования: #{@student.source}"
+-if @student.comment
+  h2 Комментарий
+  p= @student.comment
+-unless @student.personal_documents.empty?
+  h2 Документы
+  - @student.personal_documents.each do |pd|
+    = link_to [pd.name, pd.number].join(" "), pd
+-unless @student.moving_documents.empty?
+  h2 Приказы о движении
+  - @student.moving_documents.each do |md|
+    = link_to [md.name, md.number, md.date].join(" "), md
