@@ -11,17 +11,15 @@ p.pull-right= educational_status(@student)
 h2 Персональные данные
 dl
   dt Дата рождения
-  dd= @student.birth_date
+  dd= @student.birth_date.strftime("%d.%m.%Y")
   dt Гражданство
   dd= @student.sitizenship
   dt Регион проживания
   dd= @student.region_code
 h2 Обучение
 dl
-  dt Дата начала обучения
-  dd= @student.education_start_date
-  dt Место начала обучения
-  dd= @student.education_start_place
+  dt Место и дата начала обучения
+  dd= [@student.education_start_place, @student.education_start_date.strftime("%d.%m.%Y")].compact.join(", ")
   dt Образовательная программа
   dd= "#{@student.educational_program.name} (#{@student.educational_program.level}), #{@student.educational_program.standart}, источник финансирования: #{@student.source}"
   -if @student.target_organization
@@ -37,4 +35,4 @@ dl
 -unless @student.moving_documents.empty?
   h2 Приказы о движении
   - @student.moving_documents.each do |md|
-    = link_to [md.name, md.number, md.date].join(" "), md
+    = link_to [md.name, md.number, md.date.strftime("%d.%m.%Y")].join(" "), md
