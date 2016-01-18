@@ -1,9 +1,9 @@
 h1.page-header
   - case
     - when @student.stage_leader
-      .span.text-success.glyphicon.glyphicon-star
+      .small.text-success.glyphicon.glyphicon-star
     - when @student.group_leader
-      .span.text-success.glyphicon.glyphicon-star-empty
+      .small.text-success.glyphicon.glyphicon-star-empty
   = "#{@student.fio} #{sex_sign(@student.sex)}".html_safe
 p.pull-left= @student.status.name if @student.status
 p.pull-right= educational_status(@student)
@@ -28,7 +28,7 @@ dl
     dt Заказчик целевой подготовки
     dd= @student.target_organization.name
 -if @student.comment
-  h2 Комментарий
+  h2 Дополнительная информация
   p= @student.comment
 -unless @student.personal_documents.empty?
   h2 Документы
