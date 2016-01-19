@@ -1,7 +1,8 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: [:show]
   def index
-    @students = Student.all
+    @students = Student.includes(:educational_program, :target_organization).all
+    @moving_document = MovingDocument.new
   end
   
   def show

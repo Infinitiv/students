@@ -3,10 +3,44 @@ h1.page-header Список обучающихся
   = file_field_tag :file
   br
   = submit_tag "Загрузить обучающихся", class: "btn btn-primary"
-table.table.datatable
-  thead
-    th Ф.И.О.
-  tbody
-    - @students.each do |student|
-        tr
-          td= "#{sex_sign(student.sex)} #{link_to student.fio, student_path(student)}".html_safe
+= form_tag moving_documents_path(@moving_document) do
+  table.table.datatable
+    thead
+      tr
+        th
+          input.checkbox type="checkbox" name="check_all"
+        th Ф.И.О.
+        th статус
+        th курс
+        th группа
+        th специальность
+    tfoot
+      tr
+        th
+          input.checkbox type="checkbox" name="check_all"
+        th Ф.И.О.
+        th статус
+        th курс
+        th группа
+        th специальность
+    tbody
+      - @students.each do |student|
+          tr
+            td
+              = check_box_tag "student_ids[]", student.id, false, class: "select"
+            td= "#{sex_sign(student.sex)} #{link_to student.fio, student_path(student)}".html_safe
+            td
+              - case
+                - when student.stage_leader
+                  .small.text-success.glyphicon.glyphicon-star
+                - when student.group_leader
+                  .small.text-success.glyphicon.glyphicon-star-empty
+              span.small.text-success= "$" unless student.source == "федеральный бюджет"
+              - if student.target_organization
+                .small.text-success.glyphicon.glyphicon-plus
+            - cell_class = "danger" unless student.stage
+            td{class=cell_class}= "#{student.stage} курс" if student.stage
+            - cell_class = "danger" unless student.group
+            td{class=cell_class}= "#{student.group} группа" if student.group
+            td= "#{student.educational_program.name} (#{student.educational_program.standart})" if student.educational_program
+  = submit_tag "В приказ", class: "btn btn-primary"
