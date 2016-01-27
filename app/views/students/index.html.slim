@@ -3,12 +3,12 @@ h1.page-header Список обучающихся
   = file_field_tag :file
   br
   = submit_tag "Загрузить обучающихся", class: "btn btn-primary"
-= form_tag moving_documents_path(@moving_document) do
+= form_for @moving_document, multipart: true do |f|
   table.table.datatable
     thead
       tr
         th
-          input.checkbox type="checkbox" name="check_all"
+          input.checkbox.check_all type="checkbox"
         th Ф.И.О.
         th статус
         th курс
@@ -17,7 +17,7 @@ h1.page-header Список обучающихся
     tfoot
       tr
         th
-          input.checkbox type="checkbox" name="check_all"
+          input.checkbox.check_all type="checkbox"
         th Ф.И.О.
         th статус
         th курс
@@ -37,10 +37,28 @@ h1.page-header Список обучающихся
                   .small.text-success.glyphicon.glyphicon-star-empty
               span.small.text-success= "$" unless student.source == "федеральный бюджет"
               - if student.target_organization
-                .small.text-success.glyphicon.glyphicon-plus
+                .small.text-success.glyphicon.glyphicon-plus title=student.target_organization.name
             - cell_class = "danger" unless student.stage
             td{class=cell_class}= "#{student.stage} курс" if student.stage
             - cell_class = "danger" unless student.group
             td{class=cell_class}= "#{student.group} группа" if student.group
             td= "#{student.educational_program.name} (#{student.educational_program.standart})" if student.educational_program
-  = submit_tag "В приказ", class: "btn btn-primary"
+  button#order.btn.btn-primary type="button" data-toggle="modal" data-target="#order-modal" disabled=true В приказ
+  #order-modal.modal.fade tabindex="-1" role="dialog" aria-labelledly="order-modal"
+    .modal-dialog role="document"
+      .modal-content
+        .modal-body
+          .form-group
+            = f.label :date
+            = f.text_field :date, value: Time.now.to_date, id: 'datepicker', class: "form-control"
+          .form-group
+            = f.label :name
+            = f.text_field :name, class: "form-control"
+          .form-group
+            = f.label :number
+            = f.text_field :number, class: "form-control"
+          .form-group
+            = f.file_field :file
+          .form-group
+            = f.submit "В приказ", class: "btn btn-primary"
+            button.btn.btn-default type="button" data-dismiss="modal" Close
