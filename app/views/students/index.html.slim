@@ -4,45 +4,56 @@ h1.page-header Список обучающихся
   br
   = submit_tag "Загрузить обучающихся", class: "btn btn-primary"
 = form_for @moving_document, multipart: true do |f|
-  table.table.datatable
-    thead
-      tr
-        th
-          input.checkbox.check_all type="checkbox"
-        th Ф.И.О.
-        th статус
-        th курс
-        th группа
-        th специальность
-    tfoot
-      tr
-        th
-          input.checkbox.check_all type="checkbox"
-        th Ф.И.О.
-        th статус
-        th курс
-        th группа
-        th специальность
-    tbody
-      - @students.each do |student|
-          tr
-            td
-              = check_box_tag "student_ids[]", student.id, false, class: "select"
-            td= "#{sex_sign(student.sex)} #{link_to student.fio, student_path(student)}".html_safe
-            td
-              - case
-                - when student.stage_leader
-                  .small.text-success.glyphicon.glyphicon-star
-                - when student.group_leader
-                  .small.text-success.glyphicon.glyphicon-star-empty
-              span.small.text-success= "$" unless student.source == "федеральный бюджет"
-              - if student.target_organization
-                .small.text-success.glyphicon.glyphicon-plus title=student.target_organization.name
-            - cell_class = "danger" unless student.stage
-            td{class=cell_class}= "#{student.stage} курс" if student.stage
-            - cell_class = "danger" unless student.group
-            td{class=cell_class}= "#{student.group} группа" if student.group
-            td= "#{student.educational_program.name} (#{student.educational_program.standart})" if student.educational_program
+  .
+    ul.nav.nav-tabs role='tablist'
+      - @students.each do |p_id, students|
+        li role='presentation'
+          = link_to @educational_programs[p_id], "##{p_id}", role: 'tab', data: {toggle: 'tab'}, aria: {controls: p_id.to_s}
+    - n = 1
+    .tab-content
+      - @students.each do |p_id, students|
+        - n == 1 ? s = "tab-pane active" : s = "tab-pane"
+        . class="#{s}" role='tabpanel' id="#{p_id}"
+          - n += 1
+          table.table.datatable
+            thead
+              tr
+                th
+                  input.checkbox.check_all type="checkbox"
+                th Ф.И.О.
+                th статус
+                th курс
+                th группа
+                th специальность
+            tfoot
+              tr
+                th
+                  input.checkbox.check_all type="checkbox"
+                th Ф.И.О.
+                th статус
+                th курс
+                th группа
+                th специальность
+            tbody
+              - students.each do |student|
+                  tr
+                    td
+                      = check_box_tag "student_ids[]", student.id, false, class: "select"
+                    td= "#{sex_sign(student.sex)} #{link_to student.fio, student_path(student)}".html_safe
+                    td
+                      - case
+                        - when student.stage_leader
+                          .small.text-success.glyphicon.glyphicon-star
+                        - when student.group_leader
+                          .small.text-success.glyphicon.glyphicon-star-empty
+                      span.small.text-success= "$" unless student.source == "федеральный бюджет"
+                      - if student.target_organization
+                        .small.text-success.glyphicon.glyphicon-plus title=student.target_organization.name
+                    - cell_class = "danger" unless student.stage
+                    td{class=cell_class}= "#{student.stage} курс" if student.stage
+                    - cell_class = "danger" unless student.group
+                    td{class=cell_class}= "#{student.group} группа" if student.group
+                    td= "#{student.educational_program.name} (#{student.educational_program.standart})" if student.educational_program
   button#order.btn.btn-primary type="button" data-toggle="modal" data-target="#order-modal" disabled=true В приказ
   #order-modal.modal.fade tabindex="-1" role="dialog" aria-labelledly="order-modal"
     .modal-dialog role="document"

@@ -1,7 +1,9 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: [:show]
   def index
-    @students = Student.includes(:educational_program, :target_organization).all
+    @students = Student.includes(:educational_program, :target_organization).sort_by(&:fio).group_by(&:educational_program_id)
+    @educational_programs = Hash.new
+    EducationalProgram.select(:id, :name).map{|e| @educational_programs[e.id] = e.name}
     @moving_document = MovingDocument.new
   end
   

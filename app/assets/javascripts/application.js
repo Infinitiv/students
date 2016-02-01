@@ -17,4 +17,5 @@
 //= require jquery-ui/datepicker
 //= require bootstrap-sprockets
 //= require bootstrap/modal
+//= require bootstrap/tab
 //= require main
