@@ -4,6 +4,7 @@ h1.page-header Список обучающихся
   br
   = submit_tag "Загрузить обучающихся", class: "btn btn-primary"
 = form_for @moving_document, multipart: true do |f|
+  button#order.btn.btn-primary type="button" data-toggle="modal" data-target="#order-modal" disabled=true В приказ
   .
     ul.nav.nav-tabs role='tablist'
       - @students.each do |p_id, students|
@@ -68,6 +69,9 @@ h1.page-header Список обучающихся
           .form-group
             = f.label :number
             = f.text_field :number, class: "form-control"
+          .form-group
+            = label_tag :status_id
+            = select_tag :status_id, options_for_select(@statuses.collect{|s| [s.name, s.id]}), {include_blank: '', class: 'form-control'}
           .form-group
             = f.file_field :file
           .form-group

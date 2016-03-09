@@ -1,10 +1,11 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: [:show]
   def index
-    @students = Student.includes(:educational_program, :target_organization).sort_by(&:fio).group_by(&:educational_program_id)
+    @students = Student.includes(:educational_program, :target_organization).order(:educational_program_id, :stage, :group, :last_name, :first_name, :middle_name).group_by(&:educational_program_id)
     @educational_programs = Hash.new
-    EducationalProgram.select(:id, :name).map{|e| @educational_programs[e.id] = e.name}
+    EducationalProgram.select(:id, :name, :standart).map{|e| @educational_programs[e.id] = [e.name, e.standart].compact.join(" ")}
     @moving_document = MovingDocument.new
+    @statuses = Status.order(:name)
   end
   
   def show
