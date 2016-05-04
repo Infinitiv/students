@@ -1,3 +1,6 @@
+.pull-right
+  = link_to '', edit_student_path(@student), title: 'Редактировать', class: "glyphicon glyphicon-pencil"
+  = link_to '', @student, title: 'Удалить', method: :delete, data: { confirm: 'Are you sure?' }, class: "glyphicon glyphicon-remove"
 h1.page-header
   - case
     - when @student.stage_leader
@@ -19,7 +22,7 @@ dl
 h2 Обучение
 dl
   dt Место и дата начала обучения
-  dd= [@student.education_start_place, @student.education_start_date.strftime("%d.%m.%Y")].compact.join(", ") if @student.education_start_place && @student.education_start_date
+  dd= [@student.education_start_place, (@student.education_start_date.strftime("%d.%m.%Y") if @student.education_start_date)].compact.join(", ")
   dt Образовательная программа
   dd= "#{@student.educational_program.name} (#{@student.educational_program.level}), #{@student.educational_program.standart}, источник финансирования: #{@student.source}"
   -if @student.target_organization

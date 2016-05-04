@@ -1,8 +1,10 @@
+= link_to '', new_student_path, class: 'glyphicon glyphicon-plus pull-right', title: 'Добавить карточку студента'
 h1.page-header Список обучающихся
-= form_tag import_students_path, multipart: true do
-  = file_field_tag :file
-  br
-  = submit_tag "Загрузить обучающихся", class: "btn btn-primary"
+= form_tag import_students_path, class: 'form-inline pull-right', multipart: true do
+  .form-group
+    = file_field_tag :file
+  .form-group
+    = submit_tag "Загрузить обучающихся", class: "btn btn-primary"
 = form_for @moving_document, multipart: true do |f|
   button#order.btn.btn-primary type="button" data-toggle="modal" data-target="#order-modal" disabled=true В приказ
   .
@@ -62,7 +64,7 @@ h1.page-header Список обучающихся
         .modal-body
           .form-group
             = f.label :date
-            = f.text_field :date, value: Time.now.to_date, id: 'datepicker', class: "form-control"
+            = f.date_field :date, value: Time.now.to_date, class: "form-control"
           .form-group
             = f.label :name
             = f.text_field :name, class: "form-control"

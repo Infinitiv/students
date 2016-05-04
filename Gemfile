@@ -77,5 +77,3 @@ gem 'bootstrap-sass'
 
 gem 'jquery-datatables-rails'
 
-gem 'jquery-ui-rails'
-

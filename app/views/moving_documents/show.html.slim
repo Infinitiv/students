@@ -1,0 +1,6 @@
+h1.page-header= "Приказ № #{@moving_document.number} #{@moving_document.name} от #{@moving_document.date.strftime("%d.%m.%Y")}"
+h2 Список обучающихся
+ol
+  -@moving_document.students.each do |student|
+    li= link_to student.fio, student
+  

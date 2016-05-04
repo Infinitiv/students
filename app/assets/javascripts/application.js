@@ -14,7 +14,6 @@
 //= require jquery_ujs
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
-//= require jquery-ui/datepicker
 //= require bootstrap-sprockets
 //= require bootstrap/modal
 //= require bootstrap/tab
