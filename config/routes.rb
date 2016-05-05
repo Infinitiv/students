@@ -7,9 +7,22 @@ Rails.application.routes.draw do
     collection do
       post 'import'
     end
+    member do
+      put 'male'
+      put 'female'
+    end
   end
   resources :personal_documents
   resources :moving_documents
+  
+  resources :reports do
+    collection do
+      get 'contingent'
+      get 'missing_data'
+    end
+  end
+  
+  
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

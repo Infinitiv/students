@@ -1,0 +1,47 @@
+h1 Студенты с неполными данными
+- unless @statusless.empty?
+  h2 Не указан статус в академии
+  ul
+    - @statusless.each do |student|
+      li
+        = link_to "#{student.fio} - #{student.stage} курс, #{student.group} группа (#{student.educational_program.name if student.educational_program})", edit_student_path(student)
+- unless @sourceless.empty?
+  h2 Не указан источник финасирования
+  ul
+    - @sourceless.each do |student|
+      li
+        = link_to "#{student.fio} - #{student.stage} курс, #{student.group} группа (#{student.educational_program.name if student.educational_program})", edit_student_path(student)
+- unless @educational_program_less.empty?
+  h2 Не указана образовательная программа
+  ul
+    - @educational_program_less.each do |student|
+      li
+        = link_to "#{student.fio} - #{student.group} группа", edit_student_path(student)
+- unless @stageless.empty?
+  h2 Не указан курс обучения
+  ul
+    - @stageless.each do |student|
+      li
+        = link_to "#{student.fio} - #{student.group} группа (#{student.educational_program.name if student.educational_program})", edit_student_path(student)
+- unless @groupless.empty?
+  h2 Не указана группа обучения
+  ul
+    - @groupless.each do |student|
+      li
+        = link_to "#{student.fio} - #{student.stage} курс (#{student.educational_program.name if student.educational_program})", edit_student_path(student)
+- unless @sexless.empty?
+  h2 Не указан пол
+  ul
+    - @sexless.each do |student|
+      li
+        = link_to 'М', male_student_path(student), method: 'put', class: 'btn btn-success btn-xs'
+        span &nbsp;
+        = link_to 'Ж', female_student_path(student), method: 'put', class: 'btn btn-warning btn-xs'
+        span &nbsp;
+        = link_to "#{student.fio} - #{student.stage} курс, #{student.group} группа (#{student.educational_program.name if student.educational_program})", edit_student_path(student)
+- unless @stateless.empty?
+  h2 Не указано гражданство
+  ul
+    - @stateless.each do |student|
+      li
+        = link_to "#{student.fio} - #{student.stage} курс, #{student.group} группа (#{student.educational_program.name if student.educational_program})", edit_student_path(student)

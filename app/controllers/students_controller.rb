@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  before_action :set_student, only: [:show, :update, :destroy, :edit]
+  before_action :set_student, only: [:show, :update, :destroy, :edit, :male, :female]
   before_action :student_params, only: [:create]
   before_action :options_for_select
 
@@ -48,6 +48,16 @@ class StudentsController < ApplicationController
   def import
     Student.import(params[:file])
     redirect_to students_url, notice: "Students imported."
+  end
+  
+  def male
+    @student.update_attributes(sex: 'мужской')
+    redirect_to :back
+  end
+  
+  def female
+    @student.update_attributes(sex: 'женский')
+    redirect_to :back
   end
   
   private

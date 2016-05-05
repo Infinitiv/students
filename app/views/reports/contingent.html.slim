@@ -1,0 +1,129 @@
+h1 Численность обучающихся
+- [@medical_faculty, @pediatric_faculty, @stomat_faculty].each do |faculty|
+  - case faculty
+    - when [1, 3]
+      - faculty_name = 'Лечебное дело'
+    - when [2, 4]
+      - faculty_name = 'Педиатрия'
+    - when [5]
+      - faculty_name = 'Стоматология'
+  table.table.table-bordered
+    caption= faculty_name
+    thead
+      tr
+        th
+        th(colspan=5) Численность студентов на курсе
+        th(colspan=5) Женщины
+        th(colspan=5) Мужчины
+        th
+        th
+      tr
+        th Курс
+        th Бюджет
+        th Иностранцы (бюджет)
+        th Договор
+        th Иностранцы (договор)
+        th Всего
+        th Бюджет
+        th Иностранцы (бюджет)
+        th Договор
+        th Иностранцы (договор)
+        th Всего
+        th Бюджет
+        th Иностранцы (бюджет)
+        th Договор
+        th Иностранцы (договор)
+        th Всего
+        th Академический отпуск
+        th Всего по факультету
+    tfoot
+      tr
+        td
+        td= @students.where(educational_program_id: faculty, source: @budget, sitizenship: @russia, status_id: 1).length
+        td= @students.where(educational_program_id: faculty, source: @budget, status_id: 1).where.not(sitizenship: @russia).length
+        td= @students.where(educational_program_id: faculty, source: @commercial, sitizenship: @russia, status_id: 1).length
+        td= @students.where(educational_program_id: faculty, source: @commercial, status_id: 1).where.not(sitizenship: @russia).length
+        td= @students.where(educational_program_id: faculty, status_id: 1).length
+        td= @students.where(educational_program_id: faculty, source: @budget, sitizenship: @russia, sex: 'женский', status_id: 1).length
+        td= @students.where(educational_program_id: faculty, source: @budget, sex: 'женский', status_id: 1).where.not(sitizenship: @russia).length
+        td= @students.where(educational_program_id: faculty, source: @commercial, sitizenship: @russia, sex: 'женский', status_id: 1).length
+        td= @students.where(educational_program_id: faculty, source: @commercial, sex: 'женский', status_id: 1).where.not(sitizenship: @russia).length
+        td= @students.where(educational_program_id: faculty, sex: 'женский', status_id: 1).length
+        td= @students.where(educational_program_id: faculty, source: @budget, sitizenship: @russia, sex: 'мужской', status_id: 1).length
+        td= @students.where(educational_program_id: faculty, source: @budget, sex: 'мужской', status_id: 1).where.not(sitizenship: @russia).length
+        td= @students.where(educational_program_id: faculty, source: @commercial, sitizenship: @russia, sex: 'мужской', status_id: 1).length
+        td= @students.where(educational_program_id: faculty, source: @commercial, sex: 'мужской', status_id: 1).where.not(sitizenship: @russia).length
+        td= @students.where(educational_program_id: faculty, sex: 'мужской', status_id: 1).length
+        td= @students.where(educational_program_id: faculty, status_id: 3).length
+        td= @students.where(educational_program_id: faculty, status_id: [1, 3]).length
+    tbody
+      - @stages.each do |stage|
+        tr
+          td= stage
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @budget, sitizenship: @russia, status_id: 1).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @budget, status_id: 1).where.not(sitizenship: @russia).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @commercial, sitizenship: @russia, status_id: 1).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @commercial, status_id: 1).where.not(sitizenship: @russia).length
+          td= @students.where(educational_program_id: faculty, stage: stage, status_id: 1).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @budget, sitizenship: @russia, sex: 'женский', status_id: 1).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @budget, sex: 'женский', status_id: 1).where.not(sitizenship: @russia).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @commercial, sitizenship: @russia, sex: 'женский', status_id: 1).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @commercial, sex: 'женский', status_id: 1).where.not(sitizenship: @russia).length
+          td= @students.where(educational_program_id: faculty, stage: stage, sex: 'женский', status_id: 1).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @budget, sitizenship: @russia, sex: 'мужской', status_id: 1).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @budget, sex: 'мужской', status_id: 1).where.not(sitizenship: @russia).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @commercial, sitizenship: @russia, sex: 'мужской', status_id: 1).length
+          td= @students.where(educational_program_id: faculty, stage: stage, source: @commercial, sex: 'мужской', status_id: 1).where.not(sitizenship: @russia).length
+          td= @students.where(educational_program_id: faculty, stage: stage, sex: 'мужской', status_id: 1).length
+          td= @students.where(educational_program_id: faculty, stage: stage, status_id: 3).length
+          td= @students.where(educational_program_id: faculty, stage: stage, status_id: [1, 3]).length
+          
+table.table.table-bordered
+  caption Общая численность
+  thead
+    tr
+      th
+      th(colspan=5) Численность студентов на курсе
+      th(colspan=5) Женщины
+      th(colspan=5) Мужчины
+      th
+      th
+    tr
+      th Курс
+      th Бюджет
+      th Иностранцы (бюджет)
+      th Договор
+      th Иностранцы (договор)
+      th Всего
+      th Бюджет
+      th Иностранцы (бюджет)
+      th Договор
+      th Иностранцы (договор)
+      th Всего
+      th Бюджет
+      th Иностранцы (бюджет)
+      th Договор
+      th Иностранцы (договор)
+      th Всего
+      th Академический отпуск
+      th Всего
+  tfoot
+    tr
+      td
+      td= @students.where(source: @budget, sitizenship: @russia, status_id: 1).length
+      td= @students.where(source: @budget, status_id: 1).where.not(sitizenship: @russia).length
+      td= @students.where(source: @commercial, sitizenship: @russia, status_id: 1).length
+      td= @students.where(source: @commercial, status_id: 1).where.not(sitizenship: @russia).length
+      td= @students.where(sitizenship: @russia, status_id: 1).length
+      td= @students.where(source: @budget, sitizenship: @russia, sex: 'женский', status_id: 1).length
+      td= @students.where(source: @budget, sex: 'женский', status_id: 1).where.not(sitizenship: @russia).length
+      td= @students.where(source: @commercial, sitizenship: @russia, sex: 'женский', status_id: 1).length
+      td= @students.where(source: @commercial, sex: 'женский', status_id: 1).where.not(sitizenship: @russia).length
+      td= @students.where(sex: 'женский', status_id: 1).length
+      td= @students.where(source: @budget, sitizenship: @russia, sex: 'мужской', status_id: 1).length
+      td= @students.where(source: @budget, sex: 'мужской', status_id: 1).where.not(sitizenship: @russia).length
+      td= @students.where(source: @commercial, sitizenship: @russia, sex: 'мужской', status_id: 1).length
+      td= @students.where(source: @commercial, sex: 'мужской', status_id: 1).where.not(sitizenship: @russia).length
+      td= @students.where(sex: 'мужской', status_id: 1).length
+      td= @students.where(status_id: 3).length
+      td= @students.where(status_id: [1, 3]).length
