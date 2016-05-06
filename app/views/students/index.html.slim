@@ -28,41 +28,44 @@ h1.page-header Список обучающихся
                   th
                     input.checkbox.check_all type="checkbox"
                 th Ф.И.О.
-                th статус
+                th прочее
                 th курс
                 th группа
-                th специальность
+                th статус
             tfoot
               tr
                 -if can? :create, @moving_document
                   th
                     input.checkbox.check_all type="checkbox"
                 th Ф.И.О.
-                th статус
+                th прочее
                 th курс
                 th группа
-                th специальность
+                th статус
             tbody
               - students.each do |student|
                   tr
                     -if can? :create, @moving_document
                       td
                         = check_box_tag "student_ids[]", student.id, false, class: "select"
-                    td= "#{sex_sign(student.sex)} #{link_to student.fio, student_path(student)}".html_safe
+                    td= link_to "#{sex_sign(student.sex)} #{link_to student.fio, student_path(student)}".html_safe, "?sex=#{student.sex}" if student.sex
                     td
                       - case
                         - when student.stage_leader
-                          .small.text-success.glyphicon.glyphicon-star
+                          = link_to "?stage_leader=true" do
+                            .small.text-success.glyphicon.glyphicon-star 
                         - when student.group_leader
-                          .small.text-success.glyphicon.glyphicon-star-empty
-                      span.small.text-success= "$" unless student.source == "федеральный бюджет"
+                          = link_to "?group_leader=true" do
+                            .small.text-success.glyphicon.glyphicon-star-empty
+                      span.small.text-success= "$" if student.source == "средства физических и юридических лиц"
                       - if student.target_organization
-                        .small.text-success.glyphicon.glyphicon-plus title=student.target_organization.name
+                        = link_to "?target_organization_id=#{student.target_organization_id}"
+                          .small.text-success.glyphicon.glyphicon-plus title=student.target_organization.name
                     - cell_class = "danger" unless student.stage
-                    td{class=cell_class}= "#{student.stage} курс" if student.stage
+                    td{class=cell_class}= link_to "#{student.stage} курс", "?educational_program_id=#{student.educational_program_id}&stage=#{student.stage}" if student.stage
                     - cell_class = "danger" unless student.group
-                    td{class=cell_class}= "#{student.group} группа" if student.group
-                    td= "#{student.educational_program.name} (#{student.educational_program.standart})" if student.educational_program
+                    td{class=cell_class}= link_to "#{student.group} группа", "?educational_program_id=#{student.educational_program_id}&stage=#{student.stage}&group=#{student.group}" if student.group
+                    td= link_to "#{student.status.name}", "?status_id=#{student.status_id}" if student.status_id
   -if can? :create, @moving_document
     button#order.btn.btn-primary type="button" data-toggle="modal" data-target="#order-modal" disabled=true В приказ
     #order-modal.modal.fade tabindex="-1" role="dialog" aria-labelledly="order-modal"

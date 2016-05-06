@@ -1,14 +1,15 @@
 class StudentsController < ApplicationController
   before_action :set_student, only: [:show, :update, :destroy, :edit, :male, :female]
   before_action :student_params, only: [:create]
+  before_action :filter_params, only: [:index]
   before_action :options_for_select
 
   def index
     authorize! :read, Student
     if current_user.dean?
-      @students = current_user.students.includes(:educational_program, :target_organization).order(:educational_program_id, :stage, :group, :last_name, :first_name, :middle_name).group_by(&:educational_program_id)
+      @students = current_user.students.includes(:educational_program, :target_organization).order(:educational_program_id, :stage, :group, :last_name, :first_name, :middle_name).where(filter_params).group_by(&:educational_program_id)
     else
-      @students = Student.includes(:educational_program, :target_organization).order(:educational_program_id, :stage, :group, :last_name, :first_name, :middle_name).group_by(&:educational_program_id)
+      @students = Student.includes(:educational_program, :target_organization).order(:educational_program_id, :stage, :group, :last_name, :first_name, :middle_name).where(filter_params).group_by(&:educational_program_id)
     end
     @educational_programs = Hash.new
     EducationalProgram.select(:id, :name, :standart).map{|e| @educational_programs[e.id] = [e.name, e.standart].compact.join(" ")}
@@ -80,6 +81,10 @@ class StudentsController < ApplicationController
   
   def student_params
     params.require(:student).permit(:id, :first_name, :middle_name, :last_name, :sex, :birth_date, :region_code, :education_start_date, :education_start_place, :benefit_type, :target_organization_id, :source, :sitizenship, :educational_program_id, :stage, :group, :stage_leader, :group_leader, :status_id, :comment)
+  end
+  
+  def filter_params
+    params.permit(:sex, :benefit_type, :target_organization_id, :source, :sitizenship, :educational_program_id, :stage, :group, :stage_leader, :group_leader, :status_id)
   end
   
   def options_for_select
