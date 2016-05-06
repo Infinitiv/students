@@ -1,6 +1,7 @@
-.pull-right
-  = link_to '', edit_student_path(@student), title: 'Редактировать', class: "glyphicon glyphicon-pencil"
-  = link_to '', @student, title: 'Удалить', method: :delete, data: { confirm: 'Are you sure?' }, class: "glyphicon glyphicon-remove"
+- if can? :manage, @student
+  .pull-right
+    = link_to '', edit_student_path(@student), title: 'Редактировать', class: "glyphicon glyphicon-pencil"
+    = link_to '', @student, title: 'Удалить', method: :delete, data: { confirm: 'Are you sure?' }, class: "glyphicon glyphicon-remove"
 h1.page-header
   - case
     - when @student.stage_leader

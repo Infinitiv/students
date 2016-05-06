@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160118074442) do
+ActiveRecord::Schema.define(version: 20160506092032) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,11 @@ ActiveRecord::Schema.define(version: 20160118074442) do
   add_index "students", ["status_id"], name: "index_students_on_status_id", using: :btree
   add_index "students", ["target_organization_id"], name: "index_students_on_target_organization_id", using: :btree
 
+  create_table "students_users", id: false, force: :cascade do |t|
+    t.integer "user_id",    null: false
+    t.integer "student_id", null: false
+  end
+
   create_table "target_organizations", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -125,8 +130,10 @@ ActiveRecord::Schema.define(version: 20160118074442) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
+    t.integer  "role_id"
   end
 
+  add_index "users", ["role_id"], name: "index_users_on_role_id", using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "moves", "moving_documents"
@@ -135,4 +142,5 @@ ActiveRecord::Schema.define(version: 20160118074442) do
   add_foreign_key "students", "educational_programs"
   add_foreign_key "students", "statuses"
   add_foreign_key "students", "target_organizations"
+  add_foreign_key "users", "roles"
 end

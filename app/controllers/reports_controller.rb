@@ -1,6 +1,7 @@
 class ReportsController < ApplicationController
   
-  def contingent 
+  def contingent
+    authorize! :read, :all
     @students = Student.select(:sex, :benefit_type, :target_organization_id, :source, :sitizenship, :educational_program_id, :stage, :status_id)
     @medical_faculty = [1, 3]
     @pediatric_faculty = [2, 4]
@@ -12,7 +13,8 @@ class ReportsController < ApplicationController
   end
   
   def missing_data
-    students = Student.includes(:educational_program)
+    authorize! :read, :all
+    students = current_user.dean? ? current_user.students.includes(:educational_program) : Student.includes(:educational_program)
     @sexless = students.where(sex: nil)
     @stateless = students.where(sitizenship: nil)
     @statusless = students.where(status_id: nil)

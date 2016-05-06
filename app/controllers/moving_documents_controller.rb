@@ -1,12 +1,13 @@
 class MovingDocumentsController < ApplicationController
   before_action :set_movning_document, only: [:show]
-  before_action :moving_document_params, only: [:create]
+  before_action :moving_document_params, only: [:create, :destroy]
   
   def show
-    
+    authorize! :read, @moving_document
   end
   
   def create
+    authorize! :manage, @moving_document
     moving_document = MovingDocument.new(moving_document_params)
     students = Student.where(id: params[:student_ids])
     status_id = params[:status_id]
@@ -18,6 +19,10 @@ class MovingDocumentsController < ApplicationController
       end
       redirect_to moving_document_path(moving_document)
     end
+  end
+  
+  def destroy
+    authorize! :manage, @moving_document
   end
   
   private

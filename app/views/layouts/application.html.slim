@@ -12,6 +12,7 @@ body
         li= link_to "Отчет", contingent_reports_path
         li= link_to "Контингент", root_path
         li= link_to 'Дефектура', missing_data_reports_path
+        li= link_to 'Пользователи', users_path if can? :manage, User
       ul.nav.navbar-nav.pull-right
         li= current_user ? (link_to 'Выйти', destroy_user_session_path, method: 'delete') : (link_to 'Войти', new_user_session_path)
     .row

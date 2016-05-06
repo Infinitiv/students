@@ -1,12 +1,15 @@
-= link_to '', new_student_path, class: 'glyphicon glyphicon-plus pull-right', title: 'Добавить карточку студента'
+-if can? :update, Student
+  = link_to '', new_student_path, class: 'glyphicon glyphicon-plus pull-right', title: 'Добавить карточку студента'
 h1.page-header Список обучающихся
-= form_tag import_students_path, class: 'form-inline pull-right', multipart: true do
-  .form-group
-    = file_field_tag :file
-  .form-group
-    = submit_tag "Загрузить обучающихся", class: "btn btn-primary"
+- if can? :create, Student
+  = form_tag import_students_path, class: 'form-inline pull-right', multipart: true do
+    .form-group
+      = file_field_tag :file
+    .form-group
+      = submit_tag "Загрузить обучающихся", class: "btn btn-primary"
 = form_for @moving_document, multipart: true do |f|
-  button#order.btn.btn-primary type="button" data-toggle="modal" data-target="#order-modal" disabled=true В приказ
+  -if can? :create, @moving_document
+    button#order.btn.btn-primary type="button" data-toggle="modal" data-target="#order-modal" disabled=true В приказ
   .
     ul.nav.nav-tabs role='tablist'
       - @students.each do |p_id, students|
@@ -21,8 +24,9 @@ h1.page-header Список обучающихся
           table.table.datatable
             thead
               tr
-                th
-                  input.checkbox.check_all type="checkbox"
+                -if can? :create, @moving_document
+                  th
+                    input.checkbox.check_all type="checkbox"
                 th Ф.И.О.
                 th статус
                 th курс
@@ -30,8 +34,9 @@ h1.page-header Список обучающихся
                 th специальность
             tfoot
               tr
-                th
-                  input.checkbox.check_all type="checkbox"
+                -if can? :create, @moving_document
+                  th
+                    input.checkbox.check_all type="checkbox"
                 th Ф.И.О.
                 th статус
                 th курс
@@ -40,8 +45,9 @@ h1.page-header Список обучающихся
             tbody
               - students.each do |student|
                   tr
-                    td
-                      = check_box_tag "student_ids[]", student.id, false, class: "select"
+                    -if can? :create, @moving_document
+                      td
+                        = check_box_tag "student_ids[]", student.id, false, class: "select"
                     td= "#{sex_sign(student.sex)} #{link_to student.fio, student_path(student)}".html_safe
                     td
                       - case
@@ -57,25 +63,26 @@ h1.page-header Список обучающихся
                     - cell_class = "danger" unless student.group
                     td{class=cell_class}= "#{student.group} группа" if student.group
                     td= "#{student.educational_program.name} (#{student.educational_program.standart})" if student.educational_program
-  button#order.btn.btn-primary type="button" data-toggle="modal" data-target="#order-modal" disabled=true В приказ
-  #order-modal.modal.fade tabindex="-1" role="dialog" aria-labelledly="order-modal"
-    .modal-dialog role="document"
-      .modal-content
-        .modal-body
-          .form-group
-            = f.label :date
-            = f.date_field :date, value: Time.now.to_date, class: "form-control"
-          .form-group
-            = f.label :name
-            = f.text_field :name, class: "form-control"
-          .form-group
-            = f.label :number
-            = f.text_field :number, class: "form-control"
-          .form-group
-            = label_tag :status_id
-            = select_tag :status_id, options_for_select(@statuses.collect{|s| [s.name, s.id]}), {include_blank: '', class: 'form-control'}
-          .form-group
-            = f.file_field :file
-          .form-group
-            = f.submit "В приказ", class: "btn btn-primary"
-            button.btn.btn-default type="button" data-dismiss="modal" Close
+  -if can? :create, @moving_document
+    button#order.btn.btn-primary type="button" data-toggle="modal" data-target="#order-modal" disabled=true В приказ
+    #order-modal.modal.fade tabindex="-1" role="dialog" aria-labelledly="order-modal"
+      .modal-dialog role="document"
+        .modal-content
+          .modal-body
+            .form-group
+              = f.label :date
+              = f.date_field :date, value: Time.now.to_date, class: "form-control"
+            .form-group
+              = f.label :name
+              = f.text_field :name, class: "form-control"
+            .form-group
+              = f.label :number
+              = f.text_field :number, class: "form-control"
+            .form-group
+              = label_tag :status_id
+              = select_tag :status_id, options_for_select(@statuses.collect{|s| [s.name, s.id]}), {include_blank: '', class: 'form-control'}
+            .form-group
+              = f.file_field :file
+            .form-group
+              = f.submit "В приказ", class: "btn btn-primary"
+              button.btn.btn-default type="button" data-dismiss="modal" Close
